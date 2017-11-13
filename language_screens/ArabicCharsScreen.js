@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-
 import DrawerView from 'react-native-drawerview';
 
 import { styles } from '../styles.js';
 import CharManager from '../CharManager.js';
 import Arabic from '../languages/Arabic.js';
-
 import ControlPanel from '../ControlPanel.js';
 
 

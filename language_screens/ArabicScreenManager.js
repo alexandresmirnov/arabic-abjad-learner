@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 
-import Drawer from 'react-native-drawer';
-
 import { styles } from '../styles.js';
-import HeaderMenu from '../HeaderMenu.js';
 
 import ArabicWordsScreen from './ArabicWordsScreen.js';
 import ArabicCharsScreen from './ArabicCharsScreen.js';

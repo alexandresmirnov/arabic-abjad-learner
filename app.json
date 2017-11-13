@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "sdkVersion": "21.0.0",
+    "name": "Arabic Abjad Learner",
+    "version": "1.0.0",
+    "slug": "arabicabjadlearner",
+    "icon": "../ic_motorcycle_black_48dp.png",
+    "android": {
+      "package": "com.alexandresmirnov.arabicabjadlearner"
+    }
+  }
+}

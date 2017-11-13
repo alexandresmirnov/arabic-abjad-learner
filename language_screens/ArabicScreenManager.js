@@ -31,7 +31,7 @@ const ArabicContent = TabNavigator({
 //ArabicScreen screen (used inside top-level drawer), contains Words and MF
 class ArabicScreenManager extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Arabic abjad learner',
+    title: 'Arabic Abjad Learner',
     headerStyle: styles.stackHeader,
     headerTitleStyle: styles.stackHeaderTitle,
   });

@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     fontSize: 50,
     height: 80,
     lineHeight: 80,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 
   //input field
@@ -41,29 +41,12 @@ export const styles = StyleSheet.create({
     lineHeight: 20
   },
 
-  //content of slide-out drawer
-  drawerContent: {
-    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
-  },
-
-  //main text in drawer
-  drawerHeader: {
-    fontSize: 24,
-    height: 56,
-    lineHeight: 44,
-    paddingLeft: 16
-  },
-
-  drawerSubHeader: {
-    height: 20,
-    paddingLeft: 16
-  },
-
   //stack header, contains language name
   stackHeader: {
-    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+    //marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     elevation: 0, //removes shadow
     justifyContent: 'space-between',
+    height: 48
   },
 
   //text in stack header, need to center it
@@ -71,7 +54,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: 24, //default is 20,
-    fontWeight: "100"
+    lineHeight: 36,
+    fontWeight: "400",
+    color: '#00695C'
   },
 
   headerLeftButton: {
@@ -94,6 +79,10 @@ export const styles = StyleSheet.create({
     paddingBottom: 10
   },
 
+  cpView: {
+    backgroundColor: '#fafafa'
+  },
+
   cpField: {
     height: 50,
     flex: 1,
@@ -108,6 +97,7 @@ export const styles = StyleSheet.create({
     lineHeight: 35,
     textAlign: 'center',
     flex: 0.5,
+    color: '#004D40',
   },
 
   cpFieldInput: {

@@ -104,7 +104,9 @@ class ArabicCharsScreen extends Component {
         closedOffset={-1 * this.getCPHeight()}
         threshold={30}
       >
-        <View style={{backgroundColor: '#fafafa', height: this.getCPHeight()}}>
+      <View
+        style={[styles.cpView, {height: this.getCPHeight()}]}
+      >
           <ControlPanel
             ref={(ref) => {this._controlPanel = ref}}
             onSettingsChange={(s) => {this.handleSettingsChange(s)}}

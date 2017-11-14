@@ -100,7 +100,7 @@ class ArabicWordsScreen extends Component {
         threshold={30}
       >
         <View
-          style={{backgroundColor: '#fafafa', height: this.getCPHeight()}}
+          style={[styles.cpView, {height: this.getCPHeight()}]}
         >
           <ControlPanel
             ref={(ref) => {this._controlPanel = ref}}

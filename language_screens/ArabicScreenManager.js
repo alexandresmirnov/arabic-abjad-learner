@@ -18,13 +18,17 @@ const ArabicContent = TabNavigator({
   }
 },
 {
+  ...TabNavigator.Presets.AndroidTopTabs, //have android style tabs on iOS
   tabBarOptions: {
     style: {
       backgroundColor: 'white'
     },
     lazy: false,
-    activeTintColor: 'black',
-    inactiveTintColor: '#aaa'
+    activeTintColor: '#009688',
+    inactiveTintColor: '#aaa',
+    indicatorStyle: {
+      backgroundColor: '#009688'
+    }
   }
 });
 

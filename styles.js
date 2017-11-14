@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     fontSize: 24, //default is 20,
     lineHeight: 36,
     fontWeight: "400",
-    color: '#00695C'
+    color: '#004D40'
   },
 
   headerLeftButton: {

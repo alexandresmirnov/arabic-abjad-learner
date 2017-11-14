@@ -60,7 +60,8 @@ class CharManager extends Component {
     }
     else if(input == ' '){
       this.setState({
-        hint: this.state.answer
+        hint: this.state.answer,
+        inputValue: ''
       });
     }
     else if(input.length >= this.state.answer.length){

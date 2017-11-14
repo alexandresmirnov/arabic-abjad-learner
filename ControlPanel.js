@@ -4,6 +4,7 @@ import { View, Text, TextInput, StyleSheet, Switch, Slider } from 'react-native'
 import PropTypes from 'prop-types';
 
 import { styles } from './styles.js';
+import ToggleButton from './ToggleButton.js';
 
 /*
 
@@ -43,6 +44,16 @@ class ControlPanel extends Component {
       this.state.settings[field.name] = field.defaultValue;
       if(field.type == 'slider'){
         this.state.sliderValues[field.name] = field.defaultValue;
+      }
+      else if(field.type == 'button-group'){
+        let buttonGroupSettings = {};
+        for(index in field.config.buttons){
+          let button = field.config.buttons[index];
+
+          buttonGroupSettings[button.name] = button.defaultValue;
+        }
+
+        this.state.settings[field.name] = buttonGroupSettings;
       }
     }
 
@@ -133,6 +144,11 @@ class ControlPanel extends Component {
     this.setSettings(delta);
   }
 
+  updateButtonGroup(groupName, buttonName, value){
+    let delta = this.state.settings;
+    delta[groupName][buttonName] = value;
+    this.setSettings(delta);
+  }
 
   generateField(field){
 
@@ -211,6 +227,39 @@ class ControlPanel extends Component {
                 }}
                 value = {defaultValue}
               />
+            </View>
+          </View>
+        );
+        break;
+
+      case 'button-group':
+
+        let buttons = [];
+
+        for(index in config.buttons){
+          button = config.buttons[index];
+          //console.log("generating button: ", button);
+          buttons = buttons.concat(
+            <ToggleButton
+              key={button.name}
+              name={button.name}
+              text={button.text}
+              value={this.state.settings[name][button.name]}
+              defaultValue={button.defaultValue}
+              onPress={(buttonName, value) => {
+                this.updateButtonGroup(name, buttonName, value)
+              }}
+            />
+          );
+        }
+
+        return (
+          <View
+            key={name}
+            style={styles.cpField}
+          >
+            <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+              {buttons}
             </View>
           </View>
         );

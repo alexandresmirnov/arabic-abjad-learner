@@ -48,6 +48,40 @@ const SETTINGS_FIELDS = [
     defaultValue: false,
     invalidValue: false,
     group: 'type'
+  },
+  {
+    name: 'includeForms',
+    type: 'button-group',
+    label: 'Forms:',
+    config: {
+      buttons: [
+        {
+          name: 'initial',
+          text: 'Initial',
+          defaultValue: false,
+        },
+        {
+          name: 'medial',
+          text: 'Medial',
+          defaultValue: true
+        },
+        {
+          name: 'final',
+          text: 'Final',
+          defaultValue: false,
+        },
+        {
+          name: 'isolated',
+          text: 'Isolated',
+          defaultValue: false,
+        },
+        {
+          name: 'trouble',
+          text: 'Trouble',
+          defaultValue: false,
+        }
+      ]
+    }
   }
 ];
 

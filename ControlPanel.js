@@ -67,23 +67,25 @@ class ControlPanel extends Component {
     this.setSettings(this.state.settings);
   }
 
-  resetGroup(settings, group){
-
-    let delta = settings;
+  resetButtonGroup(settings, name){
 
     for(index in this.props.fields){
       let field = this.props.fields[index];
-      if(field.group == group){
-        delta[field.name] = this.props.fields[index].defaultValue;
+      if(field.name == name){
+        let resetGroup = {};
+        for(buttonIndex in field.config.buttons){
+          let button = field.config.buttons[buttonIndex];
+          resetGroup[button.name] = button.defaultValue;
+        }
+        settings[field.name] = resetGroup;
       }
 
     }
 
-    return delta;
+    return settings;
   }
 
-  //called by parent container; after this, all groups should be valid
-  //TODO: add valid ranges for numbers
+  //called by parent container; after this, all button groups should be valid
   validateSettings(){
     /*
     groupValidities: {
@@ -95,30 +97,37 @@ class ControlPanel extends Component {
 
     let newSettings = this.state.settings;
 
-    let groupValidities = {}
+    let buttonGroupValidities = {}
 
     //all false by default
     for(let index in this.props.fields){
       let field = this.props.fields[index];
-      if(groupValidities[field.group] == null){
-        groupValidities[field.group] = false;
+      if(field.type == 'button-group' && buttonGroupValidities[field.name] == null){
+        buttonGroupValidities[field.name] = false;
       }
     }
 
     //set valid groups to true
     for(let index in this.props.fields){
       let field = this.props.fields[index];
-      if(this.state.settings[field.name] != field.invalidValue){
-        //valid value means group is valid
-        groupValidities[field.group] = true;
+      if(field.type == 'button-group'){
+        for(let buttonIndex in field.config.buttons){
+          let button = field.config.buttons[buttonIndex];
+          if(this.state.settings[field.name][button.name] == true){
+            //true value means group is valid
+            buttonGroupValidities[field.name] = true;
+          }
+        }
+
       }
+
     }
 
     //fix all the invalid groups
-    for(let name in groupValidities){
-      let validity = groupValidities[name];
+    for(let name in buttonGroupValidities){
+      let validity = buttonGroupValidities[name];
       if(validity == false){
-        newSettings = this.resetGroup(newSettings, name);
+        newSettings = this.resetButtonGroup(newSettings, name);
       }
     }
 
@@ -237,10 +246,24 @@ class ControlPanel extends Component {
         let buttons = [];
 
         for(index in config.buttons){
-          button = config.buttons[index];
+          let button = config.buttons[index];
+
+          let position;
+
+          if(index == 0){
+            position = 'first';
+          }
+          else if(index == config.buttons.length-1){
+            position = 'last';
+          }
+          else {
+            position = 'middle';
+          }
+
           //console.log("generating button: ", button);
           buttons = buttons.concat(
             <ToggleButton
+              position={position}
               key={button.name}
               name={button.name}
               text={button.text}

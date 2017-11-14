@@ -515,19 +515,19 @@ class Arabic {
   getNewChar() {
     let pairBank = [];
 
-    if(this.settings.includeInitial == true){
+    if(this.settings.includeForms.initial == true){
       pairBank = pairBank.concat(this.getPairs().initialForms);
     }
-    if(this.settings.includeMedial == true){
+    if(this.settings.includeForms.medial == true){
       pairBank = pairBank.concat(this.getPairs().medialForms);
     }
-    if(this.settings.includeFinal == true){
+    if(this.settings.includeForms.final == true){
       pairBank = pairBank.concat(this.getPairs().finalForms);
     }
-    if(this.settings.includeIsolated == true){
+    if(this.settings.includeForms.isolated == true){
       pairBank = pairBank.concat(this.getPairs().isolatedForms);
     }
-    if(this.settings.includeTrouble == true){
+    if(this.settings.includeForms.trouble == true){
       pairBank = pairBank.concat(this.getPairs().troubleForms);
     }
 

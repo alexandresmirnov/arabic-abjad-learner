@@ -10,46 +10,6 @@ import ControlPanel from '../ControlPanel.js';
 
 const SETTINGS_FIELDS = [
   {
-    name: 'includeInitial',
-    type: 'switch',
-    label: 'Initial forms:',
-    defaultValue: false,
-    invalidValue: false,
-    group: 'type'
-  },
-  {
-    name: 'includeMedial',
-    type: 'switch',
-    label: 'Medial forms:',
-    defaultValue: true,
-    invalidValue: false,
-    group: 'type'
-  },
-  {
-    name: 'includeFinal',
-    type: 'switch',
-    label: 'Final forms:',
-    defaultValue: false,
-    invalidValue: false,
-    group: 'type'
-  },
-  {
-    name: 'includeIsolated',
-    type: 'switch',
-    label: 'Isolated forms:',
-    defaultValue: false,
-    invalidValue: false,
-    group: 'type'
-  },
-  {
-    name: 'includeTrouble',
-    type: 'switch',
-    label: 'Trouble forms:',
-    defaultValue: false,
-    invalidValue: false,
-    group: 'type'
-  },
-  {
     name: 'includeForms',
     type: 'button-group',
     label: 'Forms:',
@@ -102,6 +62,18 @@ class ArabicCharsScreen extends Component {
     for(index in SETTINGS_FIELDS){
       field = SETTINGS_FIELDS[index];
       this.state.settings[field.name] = SETTINGS_FIELDS[index].defaultValue;
+
+      if(field.type == 'button-group'){
+        this.state.settings[field.name] = {};
+        for(let buttonIndex in field.config.buttons){
+          let button = field.config.buttons[buttonIndex];
+
+          this.state.settings[field.name][button.name] = button.defaultValue;
+        }
+      }
+      else {
+
+      }
     }
   }
 
@@ -109,8 +81,6 @@ class ArabicCharsScreen extends Component {
     this.setState({
       settings: s
     });
-
-    console.log('this.state.settings: ', this.state.settings);
   }
 
   getCPHeight() {

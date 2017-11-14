@@ -19,17 +19,18 @@ class ToggleButton extends Component {
     super(props);
 
     let mainColor = '#00796B';
+    let borderColor = mainColor;
     let borderWidth = 1;
 
     this.style = {
       height: 40,
-      marginTop: 10,
+      marginTop: 5,
       paddingLeft: 10,
       paddingRight: 10,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      borderColor: mainColor
+      borderColor: borderColor,
     };
 
     this.firstStyle = {
@@ -56,7 +57,7 @@ class ToggleButton extends Component {
     };
 
     this.inactiveStyle = {
-      backgroundColor: '#fff'
+      backgroundColor: '#fafafa'
     };
 
     this.textStyle = {

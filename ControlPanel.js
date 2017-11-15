@@ -251,8 +251,6 @@ class ControlPanel extends Component {
           buttonsWithValues[index].value = this.state.settings[name][button.name];
         }
 
-        console.log('buttonWithValues:',buttonsWithValues);
-
         return (
           <View
             key={name}

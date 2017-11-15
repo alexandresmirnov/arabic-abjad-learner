@@ -73,8 +73,6 @@ class ButtonGroup extends Component {
         }
       }
 
-      console.log('concatenating position: ',position);
-
       renderButtons = renderButtons.concat(
         <ToggleButton
           styles={this.props.buttonStyles}

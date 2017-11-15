@@ -349,6 +349,8 @@ class Arabic {
     let start = this.getNewDatum({
       vowelPairs: {
         fathaPairs: true,
+        kasraPairs: true,
+        dammaPairs: true,
       }
     });
 

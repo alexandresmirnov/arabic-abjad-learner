@@ -25,61 +25,100 @@ class ToggleButton extends Component {
     let borderColor = '#00796B';
     let borderWidth = 1;
 
+    this.defaultStyles = {
+      style: {
+        height: 40,
+        marginTop: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: borderColor,
+      },
+      firstStyle: {
+        borderWidth: borderWidth,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+      },
+      middleStyle: {
+        borderTopWidth: borderWidth,
+        borderBottomWidth: borderWidth,
+        borderRightWidth: borderWidth,
+      },
+      secondToLastStyle: {
+        borderTopWidth: borderWidth,
+        borderBottomWidth: borderWidth,
+      },
+      lastStyle: {
+        borderWidth: borderWidth,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+        //marginLeft: -1 * borderWidth
+      },
+      singleStyle: {
+        borderWidth: borderWidth,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+      },
+      activeStyle: {
+        backgroundColor: mainColor,
+      },
+      inactiveStyle: {
+        backgroundColor: '#fff'
+      },
+      textStyle: {
+        fontSize: 16
+      },
+      activeTextStyle: {
+        color: '#fff'
+      },
+      inactiveTextStyle: {
+        color: '#00695C'
+      }
+    }
 
-    this.style = this.props.styles != null && this.props.styles.style != null ? this.props.styles.style : {
-      height: 40,
-      marginTop: 5,
-      paddingLeft: 10,
-      paddingRight: 10,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderColor: borderColor,
-    };
+/*
+    this.style = this.props.styles != null && this.props.styles.style != null ? this.props.styles.style : ;
 
     this.firstStyle = this.props.styles != null && this.props.styles.firstStyle != null ? this.props.styles.firstStyle : {
-      borderWidth: borderWidth,
-      borderTopLeftRadius: 5,
-      borderBottomLeftRadius: 5,
+
     };
 
     this.middleStyle = this.props.styles != null && this.props.styles.middleStyle != null ? this.props.styles.middleStyle : {
-      borderTopWidth: borderWidth,
-      borderBottomWidth: borderWidth,
-      borderRightWidth: borderWidth,
+
     };
 
     this.secondToLastStyle = this.props.styles != null && this.props.styles.secondToLastStyle != null ? this.props.styles.secondToLastStyle : {
-      borderTopWidth: borderWidth,
-      borderBottomWidth: borderWidth,
+
     };
 
     this.lastStyle = this.props.styles != null && this.props.styles.lastStyle != null ? this.props.styles.lastStyle : {
-      borderWidth: borderWidth,
-      borderTopRightRadius: 5,
-      borderBottomRightRadius: 5,
-      //marginLeft: -1 * borderWidth
+
     };
 
     this.activeStyle = this.props.styles != null && this.props.styles.activeStyle != null ? this.props.styles.activeStyle : {
-      backgroundColor: mainColor,
+
     };
 
     this.inactiveStyle = this.props.styles != null && this.props.styles.inactiveStyle != null ? this.props.styles.inactiveStyle : {
-      backgroundColor: '#fff'
+
     };
 
     this.textStyle = this.props.styles != null && this.props.styles.textStyle != null ? this.props.styles.textStyle : {
-      fontSize: 16
+
     };
 
     this.activeTextStyle = this.props.styles != null && this.props.styles.activeTextStyle != null ? this.props.styles.activeTextStyle : {
-      color: '#fff'
+
     };
 
     this.inactiveTextStyle = this.props.styles != null && this.props.styles.inactiveTextStyle != null ? this.props.styles.inactiveTextStyle : {
-      color: '#00695C'
+
     }
+  */
   }
 
   handlePress(){
@@ -89,25 +128,60 @@ class ToggleButton extends Component {
 
   render(){
 
+    //style
+
+    let defaultStyle = this.defaultStyles.style;
+    let style = this.props.styles != null && this.props.styles.style != null ? this.props.styles.style : {};
+
+    //positionStyle
+    let defaultPositionStyle;
     let positionStyle;
 
     switch (this.props.position){
       case 'first':
-        positionStyle = this.firstStyle;
+        defaultPositionStyle = this.defaultStyles.firstStyle;
+        positionStyle = this.props.styles != null && this.props.styles.firstStyle != null ? this.props.styles.firstStyle : {};
         break;
 
       case 'last':
-        positionStyle = this.lastStyle;
+        defaultPositionStyle = this.defaultStyles.lastStyle;
+        positionStyle = this.props.styles != null && this.props.styles.lastStyle != null ? this.props.styles.lastStyle : {};
         break;
 
       case 'second-to-last':
-        positionStyle = this.secondToLastStyle;
+        defaultPositionStyle = this.defaultStyles.secondToLastStyle;
+        positionStyle = this.props.styles != null && this.props.styles.secondToLastStyle != null ? this.props.styles.secondToLastStyle : {};
         break;
 
-      default:
-        positionStyle = this.middleStyle;
+      case 'middle':
+        defaultPositionStyle = this.defaultStyles.middleStyle;
+        positionStyle = this.props.styles != null && this.props.styles.middleStyle != null ? this.props.styles.middleStyle : {};
         break;
+
+      case 'single':
+        defaultPositionStyle = this.defaultStyles.singleStyle;
+        positionStyle = this.props.styles != null && this.props.styles.singleStyle != null ? this.props.styles.singleStyle : {};
+        break;
+
+
     }
+
+    //activeStyle, inactiveStyle
+    let defaultActiveStyle = this.defaultStyles.activeStyle;
+    let defaultInactiveStyle = this.defaultStyles.inactiveStyle;
+    let activeStyle = this.props.styles != null && this.props.styles.activeStyle != null ? this.props.styles.activeStyle : {};
+    let inactiveStyle = this.props.styles != null && this.props.styles.inactiveStyle != null ? this.props.styles.inactiveStyle : {};
+
+
+    //textStyle
+    let defaultTextStyle = this.defaultStyles.textStyle;
+    let textStyle = this.props.styles != null && this.props.styles.textStyle != null ? this.props.styles.textStyle : {};
+
+    //activeTextStyle, inactiveTextStyle
+    let defaultActiveTextStyle = this.defaultStyles.activeTextStyle;
+    let defaultInactiveTextStyle = this.defaultStyles.inactiveTextStyle;
+    let activeTextStyle = this.props.styles != null && this.props.styles.activeTextStyle != null ? this.props.styles.activeTextStyle : {};
+    let inactiveTextStyle = this.props.styles != null && this.props.styles.inactiveTextStyle != null ? this.props.styles.inactiveTextStyle : {};
 
     if(Platform.OS == 'android'){
       return (
@@ -123,13 +197,18 @@ class ToggleButton extends Component {
           style={{flex: 1}}
         >
           <View style={[
-            this.style,
+            defaultStyle,
+            style,
+            defaultPositionStyle,
             positionStyle,
-            this.props.value ? this.activeStyle : this.inactiveStyle,
+            this.props.value ? defaultActiveStyle : defaultInactiveStyle,
+            this.props.value ? activeStyle : inactiveStyle,
           ]}>
             <Text style={[
-              this.textStyle,
-              this.props.value ? this.activeTextStyle : this.inactiveTextStyle,
+              defaultTextStyle,
+              textStyle,
+              this.props.value ? defaultActiveTextStyle : defaultInactiveTextStyle,
+              this.props.value ? activeTextStyle : inactiveTextStyle,
             ]}>
               {this.props.text}
             </Text>
@@ -147,15 +226,18 @@ class ToggleButton extends Component {
           style={{flex: 1}}
         >
           <View style={[
-            this.style,
-            this.props.value ? this.activeStyle : this.inactiveStyle,
-            this.props.position == 'first' ? this.firstStyle : {},
-            this.props.position == 'middle' ? this.middleStyle : {},
-            this.props.position == 'last' ? this.lastStyle : {},
+            defaultStyle,
+            style,
+            defaultPositionStyle,
+            positionStyle,
+            this.props.value ? defaultActiveStyle : defaultInactiveStyle,
+            this.props.value ? activeStyle : inactiveStyle,
           ]}>
             <Text style={[
-              this.textStyle,
-              this.props.value ? this.activeTextStyle : this.inactiveTextStyle,
+              defaultTextStyle,
+              textStyle,
+              this.props.value ? defaultActiveTextStyle : defaultInactiveTextStyle,
+              this.props.value ? activeTextStyle : inactiveTextStyle,
             ]}>
               {this.props.text}
             </Text>

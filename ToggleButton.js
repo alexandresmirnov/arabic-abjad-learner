@@ -9,10 +9,13 @@ import { styles } from './styles.js';
 class ToggleButton extends Component {
 
   static propTypes = {
+    //functionality
     name: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     defaultValue: PropTypes.bool.isRequired,
-    value: PropTypes.bool.isRequired
+    value: PropTypes.bool.isRequired,
+    //styles
+    styles: PropTypes.object
   }
 
   constructor(props){
@@ -22,7 +25,8 @@ class ToggleButton extends Component {
     let borderColor = '#00796B';
     let borderWidth = 1;
 
-    this.style = {
+
+    this.style = this.props.styles != null && this.props.styles.style != null ? this.props.styles.style : {
       height: 40,
       marginTop: 5,
       paddingLeft: 10,
@@ -33,42 +37,47 @@ class ToggleButton extends Component {
       borderColor: borderColor,
     };
 
-    this.firstStyle = {
+    this.firstStyle = this.props.styles != null && this.props.styles.firstStyle != null ? this.props.styles.firstStyle : {
       borderWidth: borderWidth,
       borderTopLeftRadius: 5,
       borderBottomLeftRadius: 5,
     };
 
-    this.middleStyle = {
+    this.middleStyle = this.props.styles != null && this.props.styles.middleStyle != null ? this.props.styles.middleStyle : {
       borderTopWidth: borderWidth,
       borderBottomWidth: borderWidth,
       borderRightWidth: borderWidth,
     };
 
-    this.lastStyle = {
+    this.secondToLastStyle = this.props.styles != null && this.props.styles.secondToLastStyle != null ? this.props.styles.secondToLastStyle : {
+      borderTopWidth: borderWidth,
+      borderBottomWidth: borderWidth,
+    };
+
+    this.lastStyle = this.props.styles != null && this.props.styles.lastStyle != null ? this.props.styles.lastStyle : {
       borderWidth: borderWidth,
       borderTopRightRadius: 5,
       borderBottomRightRadius: 5,
-      marginLeft: -1 * borderWidth
+      //marginLeft: -1 * borderWidth
     };
 
-    this.activeStyle = {
+    this.activeStyle = this.props.styles != null && this.props.styles.activeStyle != null ? this.props.styles.activeStyle : {
       backgroundColor: mainColor,
     };
 
-    this.inactiveStyle = {
+    this.inactiveStyle = this.props.styles != null && this.props.styles.inactiveStyle != null ? this.props.styles.inactiveStyle : {
       backgroundColor: '#fff'
     };
 
-    this.textStyle = {
+    this.textStyle = this.props.styles != null && this.props.styles.textStyle != null ? this.props.styles.textStyle : {
       fontSize: 16
     };
 
-    this.activeTextStyle = {
+    this.activeTextStyle = this.props.styles != null && this.props.styles.activeTextStyle != null ? this.props.styles.activeTextStyle : {
       color: '#fff'
     };
 
-    this.inactiveTextStyle = {
+    this.inactiveTextStyle = this.props.styles != null && this.props.styles.inactiveTextStyle != null ? this.props.styles.inactiveTextStyle : {
       color: '#00695C'
     }
   }
@@ -79,6 +88,26 @@ class ToggleButton extends Component {
   }
 
   render(){
+
+    let positionStyle;
+
+    switch (this.props.position){
+      case 'first':
+        positionStyle = this.firstStyle;
+        break;
+
+      case 'last':
+        positionStyle = this.lastStyle;
+        break;
+
+      case 'second-to-last':
+        positionStyle = this.secondToLastStyle;
+        break;
+
+      default:
+        positionStyle = this.middleStyle;
+        break;
+    }
 
     if(Platform.OS == 'android'){
       return (
@@ -95,10 +124,8 @@ class ToggleButton extends Component {
         >
           <View style={[
             this.style,
+            positionStyle,
             this.props.value ? this.activeStyle : this.inactiveStyle,
-            this.props.position == 'first' ? this.firstStyle : {},
-            this.props.position == 'middle' ? this.middleStyle : {},
-            this.props.position == 'last' ? this.lastStyle : {},
           ]}>
             <Text style={[
               this.textStyle,

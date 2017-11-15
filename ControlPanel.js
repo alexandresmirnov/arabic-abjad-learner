@@ -4,6 +4,7 @@ import { View, Text, TextInput, StyleSheet, Switch, Slider } from 'react-native'
 import PropTypes from 'prop-types';
 
 import { styles } from './styles.js';
+import ButtonGroup from './ButtonGroup.js';
 import ToggleButton from './ToggleButton.js';
 
 /*
@@ -243,47 +244,27 @@ class ControlPanel extends Component {
 
       case 'button-group':
 
-        let buttons = [];
+        let buttonsWithValues = config.buttons;
 
-        for(index in config.buttons){
-          let button = config.buttons[index];
-
-          let position;
-
-          if(index == 0){
-            position = 'first';
-          }
-          else if(index == config.buttons.length-1){
-            position = 'last';
-          }
-          else {
-            position = 'middle';
-          }
-
-          //console.log("generating button: ", button);
-          buttons = buttons.concat(
-            <ToggleButton
-              position={position}
-              key={button.name}
-              name={button.name}
-              text={button.text}
-              value={this.state.settings[name][button.name]}
-              defaultValue={button.defaultValue}
-              onPress={(buttonName, value) => {
-                this.updateButtonGroup(name, buttonName, value)
-              }}
-            />
-          );
+        for(index in buttonsWithValues){
+          let button = buttonsWithValues[index];
+          buttonsWithValues[index].value = this.state.settings[name][button.name];
         }
+
+        console.log('buttonWithValues:',buttonsWithValues);
 
         return (
           <View
             key={name}
             style={styles.cpField}
           >
-            <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-              {buttons}
-            </View>
+            <ButtonGroup
+              name={name}
+              buttons = {buttonsWithValues}
+              onButtonPress = {(buttonName, value) => {
+                this.updateButtonGroup(name, buttonName, value)
+              }}
+            />
           </View>
         );
         break;

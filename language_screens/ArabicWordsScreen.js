@@ -94,6 +94,8 @@ class ArabicWordsScreen extends Component {
   }
 
   render() {
+    console.log('wordsScreen: ', this.props.navigation.state);
+
     return (
       <DrawerView
         closedOffset={-1 * this.getCPHeight()}

@@ -99,6 +99,8 @@ class ArabicCharsScreen extends Component {
   }
 
   render() {
+    console.log('charsScreen: ', this.props.navigation.state);
+
     return (
       <DrawerView
         closedOffset={-1 * this.getCPHeight()}

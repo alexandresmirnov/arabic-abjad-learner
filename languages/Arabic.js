@@ -331,8 +331,6 @@ class Arabic {
       }
     }
 
-    console.log('pairBank:',pairBank);
-
     return this.getRandomDatum(pairBank);
 
   }

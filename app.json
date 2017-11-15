@@ -1,6 +1,6 @@
 {
   "expo": {
-    "sdkVersion": "21.0.0",
+    "sdkVersion": "22.0.0",
     "name": "Arabic Abjad Learner",
     "version": "1.0.0",
     "slug": "arabicabjadlearner",
@@ -8,6 +8,5 @@
     "android": {
       "package": "com.alexandresmirnov.arabicabjadlearner"
     },
-    "androidStatusBarColor": "#009688"
   }
 }

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View } from 'react-native';
+import PropTypes from 'prop-types';
+
 import { styles } from './styles.js';
 
 //logic behind the game, checks if input and answer match
 class CharManager extends Component {
 
   static propTypes = {
-    language: React.PropTypes.object.isRequired
+    language: PropTypes.object.isRequired
   }
 
   constructor(props){
@@ -22,6 +24,8 @@ class CharManager extends Component {
     this.onFocus = this.props.onFocus == null ? () => {} : this.props.onFocus;
     this.onInput = this.props.onInput == null ? () => {} : this.props.onInput;
     this.beforeGenerateNew = this.props.beforeGenerateNew == null ? () => {} : this.props.beforeGenerateNew;
+
+    this.hintText = 'Type the transliteration.\nTo see the answer, type space.\nPull down for settings.';
 
 
     //note that this.props contains settings object passed down from parent screen (e.g. ArabicWordsScreen)
@@ -46,7 +50,7 @@ class CharManager extends Component {
   componentDidMount() {
     this.generateNew();
     this.setState({
-      hint: 'Type the transliteration.\nTo see the answer, type space.\nPull down for settings.'
+      hint: this.hintText
     })
   }
 
@@ -76,6 +80,13 @@ class CharManager extends Component {
     }
   }
 
+  handleEndEditing(){
+    this.setState({
+      hint: this.hintText,
+      inputValue: ''
+    })
+  }
+
   render() {
     return (
       <CharView
@@ -85,6 +96,7 @@ class CharManager extends Component {
         hint={this.state.hint}
         onInput={(input) => this.handleInput(input)}
         onFocus = {() => this.onFocus()}
+        onEndEditing = {() => this.handleEndEditing()}
       />
     )
   }
@@ -104,6 +116,7 @@ class CharView extends Component {
           inputValue={this.props.inputValue}
           onInput={(input) => this.props.onInput(input)}
           onFocus={() => this.props.onFocus()}
+          onEndEditing={() => this.props.onEndEditing()}
         />
         <CharHint hint={this.props.hint} />
       </View>
@@ -133,6 +146,9 @@ export class CharInput extends Component {
           }
           onFocus = {() => {
             this.props.onFocus();
+          }}
+          onEndEditing = {() => {
+            this.props.onEndEditing();
           }}
         />
       </View>

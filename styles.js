@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
 
   //stack header, contains language name
   stackHeader: {
-    //marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     elevation: 0, //removes shadow
     justifyContent: 'space-between',
     height: 48

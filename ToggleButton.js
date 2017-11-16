@@ -35,6 +35,7 @@ class ToggleButton extends Component {
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: borderColor,
+        elevation: 2
       },
       firstStyle: {
         borderWidth: borderWidth,

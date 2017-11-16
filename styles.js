@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     elevation: 0, //removes shadow
     justifyContent: 'space-between',
-    height: 48
+    height: 52
   },
 
   //text in stack header, need to center it

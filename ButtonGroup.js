@@ -30,7 +30,13 @@ class ButtonGroup extends Component {
   constructor(props){
     super(props);
 
-    this.style = this.props.style != null ? this.props.style : {flex: 1, flexDirection: 'row', justifyContent: 'center'};
+    this.defaultStyle = {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+    };
+
+    this.style = this.props.style != null ? this.props.style : {};
   }
 
   onButtonPress(name, value){
@@ -89,7 +95,7 @@ class ButtonGroup extends Component {
 
 
     return (
-      <View style={this.style}>
+      <View style={[this.defaultStyle, this.style]}>
         {renderButtons}
       </View>
     )

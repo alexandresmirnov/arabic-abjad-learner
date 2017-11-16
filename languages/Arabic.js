@@ -1263,9 +1263,9 @@ class Arabic {
       chars: {
         initial: settings.includeForms.initial,
         medial: settings.includeForms.medial,
-        medial: settings.includeForms.medial,
         final: settings.includeForms.final,
         isolated: settings.includeForms.isolated,
+        trouble: settings.includeForms.trouble
       }
     }
 

@@ -126,8 +126,9 @@ type TuplesConfig = {
 }
 
 class Arabic {
-  config: Config
+  config: Config;
   tuples: Tuples;
+  patterns: {};
 
   constructor(config: Config) {
     this.config = config;
@@ -449,6 +450,439 @@ class Arabic {
         ]
       }
     };
+    this.patterns = {
+      cvcc: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum;
+
+        c1 = this.getDatum({
+          vowel: true
+        });
+
+        //chance of shaddah
+        if(Math.random() < 0.15){
+          c2 = this.getDatum({
+            shaddah: true
+          })
+        }
+        else {
+          c2 = this.getNewCluster();
+        }
+
+        word = {
+          char: c1.char + c2.char,
+          answer: c1.answer + c2.answer,
+        }
+
+        return word;
+      },
+      cucuc: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            damma: true,
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            damma: true,
+          }
+        });
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word = {
+          char: c1.char + c2.char + c3.char,
+          answer: c1.answer + c2.answer + c3.answer,
+        }
+
+        return word;
+      },
+      cucca: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            damma: true
+          }
+        });
+
+        c2 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        c3 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+
+        //can't have two of the same, e.g. mutta because it then gets weird
+        while(c2.answer == c3.answer.slice(0,1)){
+          c3 = this.getDatum({
+            vowel: {
+              fatha: true
+            }
+          });
+        }
+
+
+        word.char += c1.char + c2.char + c3.char;
+        word.answer += c1.answer + c2.answer + c3.answer;
+
+        return word;
+      },
+      caciic: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            kasra: true
+          }
+        });
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word.char += c1.char + c2.char + 'ي' + c3.char;
+        word.answer += c1.answer + c2.answer + 'i' + c3.answer;
+
+        return word;
+      },
+      caacic: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            kasra: true
+          }
+        });
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word.char += c1.char + 'ا' + c2.char + c3.char;
+        word.answer += c1.answer + 'a' + c2.answer + c3.answer;
+
+        return word;
+      },
+      cacaayic: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word.char += c1.char + c2.char + 'ايِ' + c3.char;
+        word.answer += c1.answer + c2.answer + 'ayi' + c3.answer;
+
+        return word;
+      },
+      cucuuc: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            damma: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            damma: true
+          }
+        });
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word.char += c1.char + c2.char + 'و' + c3.char;
+        word.answer += c1.answer + c2.answer + 'u' + c3.answer;
+
+        return word;
+      },
+      accaac: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        //can't have two of the same, e.g. attaab because it then gets weird
+        while(c1.answer == c2.answer.slice(0,1)){
+          c2 = this.getDatum({
+            vowel: {
+              fatha: true
+            }
+          });
+        }
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word.char += 'أَ' + c1.char + c2.char + 'ا' + c3.char;
+        word.answer += 'a' + c1.answer + c2.answer + 'a' + c3.answer;
+
+        return word;
+      },
+      maccac: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        //can't have two of the same, e.g. mattab because it then gets weird
+        while(c1.answer == c2.answer.slice(0,1)){
+          c2 = this.getDatum({
+            vowel: {
+              fatha: true
+            }
+          });
+        }
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word.char += 'مَ' + c1.char + c2.char + c3.char;
+        word.answer += 'ma' + c1.answer + c2.answer + c3.answer;
+
+        return word;
+      },
+      macaacic: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            kasra: true
+          }
+        });
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+
+        word.char += 'مَ' + c1.char + 'ا' + c2.char + c3.char;
+        word.answer += 'ma' + c1.answer + 'a' + c2.answer + c3.answer;
+
+        return word;
+      },
+      macaciic: (): Datum => {
+        let word: Datum = {
+          char: '',
+          answer: ''
+        };
+
+        let c1: Datum, c2: Datum, c3: Datum;
+
+        c1 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
+        });
+
+        c2 = this.getDatum({
+          vowel: {
+            kasra: true
+          }
+        });
+
+        c3 = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicedStops: true,
+            voicelessFricatives: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+
+        word.char += 'مَ' + c1.char + c2.char + 'ي' + c3.char;
+        word.answer += 'ma' + c1.answer + c2.answer + 'i' + c3.answer;
+
+        return word;
+      },
+    }
   }
 
   //getters
@@ -631,66 +1065,21 @@ class Arabic {
 
   }
 
-  getNewPattern(pattern: string){
+  getRandomPattern(){
     let word: Datum = {
       char: '',
       answer: ''
     };
 
-    if(pattern == 'CVCC'){
-      let c1: Datum, c2: Datum;
+    let random = this.randomInt(Object.keys(this.patterns).length - 1);
 
-      c1 = this.getDatum({
-        vowel: true
-      });
-
-      //chance of shaddah
-      if(Math.random() < 0.15){
-        c2 = this.getDatum({
-          shaddah: true
-        })
+    let i = 0;
+    for(let key: string in this.patterns){
+      if(i == random){
+        word = this.patterns[key]();
+        return word;
       }
-      else {
-        c2 = this.getNewCluster();
-      }
-
-      word = {
-        char: c1.char + c2.char,
-        answer: c1.answer + c2.answer,
-      }
-    }
-    else if(pattern == 'maCCaC') {
-      word.char += 'مَ';
-      word.answer += 'ma';
-
-      let c1: Datum, c2: Datum, c3: Datum;
-
-      c1 = this.getDatum({
-        plain: true
-      });
-
-      c2 = this.getDatum({
-        vowel: {
-          fatha: true
-        }
-      });
-
-      //can't have two of the same, e.g. mattab because it then gets weird
-      while(c1.answer == c2.answer.slice(0,1)){
-        c2 = this.getDatum({
-          vowel: {
-            fatha: true
-          }
-        });
-      }
-
-      c3 = this.getDatum({
-        plain: true
-      });
-
-      word.char += c1.char + c2.char + c3.char;
-      word.answer += c1.answer + c2.answer + c3.answer;
-
+      i++;
     }
 
     return word;
@@ -895,7 +1284,7 @@ class Arabic {
       result = this.getNewWord(config.settings);
     }
     else if(config.type == "patterns"){
-      result = this.getNewPattern('maCCaC');
+      result = this.getRandomPattern();
     }
     else {
       result = this.getNewChar(config.settings);

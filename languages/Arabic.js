@@ -6,7 +6,7 @@ eventually, this will extend a Language class with required methods:
   - getNewChar()
 */
 
-type Raw = [string, string];
+type Tuple = [string, string];
 
 type Datum = {
   char: string,
@@ -42,13 +42,79 @@ type WordsSettings = {
 type Config = CharsConfig | WordsConfig;
 type Settings = CharsSettings | WordsSettings;
 
+type Tuples = {
+  chars: {
+    trouble: Array<Tuple>,
+    initial: Array<Tuple>,
+    medial: Array<Tuple>,
+    final: Array<Tuple>,
+    isolated: Array<Tuple>
+  },
+  vowel: {
+    fatha: Array<Tuple>,
+    damma: Array<Tuple>,
+    kasra: Array<Tuple>
+  },
+  plain: {
+    obstruents: Array<Tuple>,
+    liquids: Array<Tuple>,
+    nasals: Array<Tuple>,
+    semiVowels: Array<Tuple>
+  },
+  shaddah: {
+    obstruents: Array<Tuple>,
+    liquids: Array<Tuple>,
+    nasals: Array<Tuple>,
+    semiVowels: Array<Tuple>
+  },
+  other: {
+    hamzaAlifs: Array<Tuple>,
+    tm: Array<Tuple>,
+    longVowels: Array<Tuple>,
+    offGlides: Array<Tuple>,
+  }
+}
+
+type TuplesConfig = {
+  chars?: {
+    trouble?: boolean,
+    initial?: boolean,
+    medial?: boolean,
+    final?: boolean,
+    isolated?: boolean,
+  } | boolean,
+  vowel?: {
+    fatha?: boolean,
+    damma?: boolean,
+    kasra?: boolean,
+  } | boolean,
+  plain?: {
+    obstruents?: boolean,
+    liquids?: boolean,
+    nasals?: boolean,
+    semiVowels?: boolean,
+  } | boolean,
+  shaddah?: {
+    obstruents?: boolean,
+    liquids?: boolean,
+    nasals?: boolean,
+    semiVowels?: boolean,
+  } | boolean,
+  other?: {
+    hamzaAlifs?: boolean,
+    tm?: boolean,
+    longVowels?: boolean,
+    offGlides?: boolean,
+  } | boolean
+}
+
 class Arabic {
   config: Config
-  pairs: {};
+  tuples: Tuples;
 
   constructor(config: Config) {
     this.config = config;
-    this.pairs = {
+    this.tuples = {
       chars: {
         trouble: [
           ['ـبـ','b'],
@@ -179,8 +245,8 @@ class Arabic {
           ['أُ','u']
         ],
       },
-      vowelPairs: {
-        fathaPairs: [
+      vowel: {
+        fatha: [
           ['بَ','ba'],
           ['تَ','ta'],
           ['ثَ','tha'],
@@ -210,7 +276,7 @@ class Arabic {
           //['وَ','wa'],
           //['يَ','ya']
         ],
-        dammaPairs: [
+        damma: [
           ['بُ','bu'],
           ['تُ','tu'],
           ['ثُ','thu'],
@@ -238,7 +304,7 @@ class Arabic {
           ['هُ','hu'],
           ['أُ',"'u"],
         ],
-        kasraPairs: [
+        kasra: [
           ['بِ','bi'],
           ['تِ','ti'],
           ['ثِ','thi'],
@@ -267,7 +333,7 @@ class Arabic {
           ['إ',"'i"]
         ],
       },
-      plainPairs: {
+      plain: {
         obstruents: [
           ['ب','b'],
           ['ت','t'],
@@ -291,17 +357,58 @@ class Arabic {
           ['ك','k'],
           ['ه','h'],
         ],
-        sonorants: [
+        liquids: [
           ['ر','r'],
           ['ل','l'],
+        ],
+        nasals: [
           ['م','m'],
           ['ن','n'],
+        ],
+        semiVowels: [
           ['و','w'],
           ['ي','y'],
+        ]
+      },
+      shaddah: {
+        obstruents: [
+          ['بّ','bb'],
+          ['تّ','tt'],
+          ['ثّ','tth'],
+          ['جّ','jj'],
+          ['حّ','HH'],
+          ['خ','kkh'],
+          ['دّ','dd'],
+          ['ذّ','ddh'],
+          ['زّ','zz'],
+          ['سّ','ss'],
+          ['شّ','ssh'],
+          ['صّ','SS'],
+          ['ضّ','DD'],
+          ['طّ','TT'],
+          ['ظّ','ZZ'],
+          ['عّ','gg'],
+          ['غّ','ggh'],
+          ['فّ','ff'],
+          ['قّ','qq'],
+          ['كّ','kk'],
+          ['هّ','hh'],
         ],
+        liquids: [
+          ['رّ','rr'],
+          ['لّ','ll'],
+        ],
+        nasals: [
+          ['مّ','mm'],
+          ['نّ','nn'],
+        ],
+        semiVowels: [
+          ['وّ','ww'],
+          ['يّ','yy'],
+        ]
       },
       other: {
-        hamzaAlifPairs: [
+        hamzaAlifs: [
           ['أَ',"a"],
           ['أُ',"u"],
           ['إ',"i"]
@@ -322,34 +429,69 @@ class Arabic {
     };
   }
 
-  getPairs() {
-    return this.pairs;
+  //getters
+  getTuples() {
+    return this.tuples;
   }
 
+  getGroup(name: string): Array<Tuple> {
+    let resultTuples: Array<Tuple> = [];
+    let tuples = this.getTuples();
+
+    for(let groupName in tuples){
+      for(let typeName in tuples[groupName]){
+        resultTuples = resultTuples.concat(tuples[groupName][typeName]);
+      }
+    }
+
+    return resultTuples;
+  }
+
+
+  //get things
   //0...max
   randomInt(max: number): number {
     return Math.floor(Math.random()*(max+1));
   }
 
-  //get random Raw from Array<Raw>
-  getRandomRaw(array: Array<Raw>): Raw {
+  //get random Tuple from Array<Tuple>
+  getRandomTuple(array: Array<Tuple>): Tuple {
     let random = this.randomInt(array.length-1);
     let el = array[random];
     return el;
   }
 
-  //get random Datum from Array<Raw>
-  getRandomDatum(rawArray: Array<Raw>): Datum {
-    let el = this.getRandomRaw(rawArray);
+  //get random Datum from Array<Tuple>
+  getRandomDatumFromArray(tupleArray: Array<Tuple>): Datum {
+    let el = this.getRandomTuple(tupleArray);
     return {
       char: el[0],
       answer: el[1]
     }
   }
 
-  getNewDatum(config: {}): Datum {
+  //loop through array, find datum matching answer
+  getDatumFromArray(tupleArray: Array<Tuple>, answer: string): Datum {
+    let datum: Datum = {
+      char: '',
+      answer: ''
+    }
+
+    for(let i = 0; i < tupleArray.length; i++){
+      let currentTuple: Tuple = tupleArray[i];
+      if(currentTuple[1] == answer){
+        datum.char = currentTuple[0];
+        datum.answer = currentTuple[1];
+      }
+    }
+
+    return datum;
+  }
+
+  //get random datum from a group
+  getDatum(config: TuplesConfig): Datum {
     let pairBank = [];
-    let pairs = this.getPairs();
+    let pairs = this.getTuples();
 
     for(let group in pairs){ //group == chars, vowelPairs, plainPairs, other
       if(config[group] != null){
@@ -370,7 +512,83 @@ class Arabic {
       }
     }
 
-    return this.getRandomDatum(pairBank);
+    return this.getRandomDatumFromArray(pairBank);
+  }
+
+
+  //get new things
+
+  //returns a cluster with no gemination
+  getNewCluster(): Datum {
+    let cluster: Datum = {
+      char: '',
+      answer: ''
+    }
+
+    let first = this.getDatum({
+      plain: {
+        obstruents: true,
+        liquids: true,
+        nasals: true
+      }
+    });
+
+    let second = this.getDatum({
+      plain: {
+        obstruents: true,
+        liquids: true,
+        nasals: true
+      }
+    });
+
+    //WARNING: need to change this, shouldn't loop based on a random number
+    //keep changing second until they're different
+    while(first.char == second.char){
+      second = this.getDatum({
+        plain: {
+          obstruents: true,
+          liquids: true,
+          nasals: true
+        }
+      });
+    }
+
+    cluster.char = first.char + second.char;
+    cluster.answer = first.answer + second.answer;
+
+    return cluster;
+
+  }
+
+  getNewPattern(pattern: string){
+    let word: Datum;
+
+    switch(pattern){
+      case 'CVCC':
+        let c1: Datum, c2: Datum;
+
+        c1 = this.getDatum({
+          vowel: true
+        });
+
+        //chance of shaddah
+        if(Math.random() < 0.15){
+          c2 = this.getDatum({
+            shaddah: true
+          })
+        }
+        else {
+          c2 = this.getNewCluster();
+        }
+
+        word = {
+          char: c1.char + c2.char,
+          answer: c1.answer + c2.answer,
+        }
+        break;
+    }
+
+    return word;
   }
 
   //TODO: remove impermissible sequences like uy and iw
@@ -385,11 +603,11 @@ class Arabic {
     }
 
     //start with a regular vowel
-    let start = this.getNewDatum({
-      vowelPairs: {
-        fathaPairs: true,
-        kasraPairs: true,
-        dammaPairs: true,
+    let start = this.getDatum({
+      vowel: {
+        fatha: true,
+        kasra: true,
+        damma: true,
       }
     });
 
@@ -400,9 +618,10 @@ class Arabic {
 
     //possibly a pre-coda
     if(Math.random() < preCodaChance){
-      let preCoda = this.getNewDatum({
-        plainPairs: {
-          sonorants: true
+      let preCoda = this.getDatum({
+        plain: {
+          liquids: true,
+          nasals: true
         }
       })
 
@@ -415,8 +634,8 @@ class Arabic {
     //TODO: add in sonorant codas, just make sure the preCoda isn't the same
     //possibly a coda
     if(Math.random() < codaChance){
-      let coda = this.getNewDatum({
-        plainPairs: {
+      let coda = this.getDatum({
+        plain: {
           obstruents: true
         }
       })
@@ -448,13 +667,13 @@ class Arabic {
   getNewEndSyllable(tmChance: number): Datum {
     //30% chance of a tm syllable
     if(Math.random() < tmChance){
-      let fathaDatum = this.getNewDatum({
-        vowelPairs: {
-          fathaPairs: true
+      let fathaDatum = this.getDatum({
+        vowel: {
+          fatha: true
         }
       });
 
-      let tm = this.getNewDatum({
+      let tm = this.getDatum({
         other: {
           tm: true
         }
@@ -477,6 +696,8 @@ class Arabic {
   //length is amount of syllables
   //TODO: set up common patterns, e.g. CVCC, MaCCaC, CuCuuC, etc.
   getNewWord(settings: WordsSettings): Datum {
+
+    console.log("this.getNewPattern('CVCC'):",this.getNewPattern('CVCC'));
 
     let word =  {
       char: '',
@@ -554,7 +775,7 @@ class Arabic {
       }
     }
 
-    return this.getNewDatum(config);
+    return this.getDatum(config);
   }
 
   getNew(): Datum {

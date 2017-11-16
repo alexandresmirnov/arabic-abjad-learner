@@ -11,23 +11,56 @@ import ToggleButton from './ToggleButton.js';
 
 TODO: make into a list
 
-props.fields format:
-{
-  name: ...,
-  type: ...,
-  label: ...,
-  defaultValue: ...,
+field types:
+
+
+type NumberField = {
+  type: 'number',
+  name: string,
+  label: string,
+  defaultValue: string
 }
+
+type SwitchField = {
+  type: 'switch',
+  name: string,
+  label: string,
+  defaultValue: string
+}
+
+type SliderField = {
+  type: 'slider',
+  name: string,
+  label: string,
+  defaultValue: string,
+  config: {
+    minimumValue: number,
+    maximumValue: number,
+    step: number,
+    displayValue: Function
+  }
+}
+
+type Button = {
+  name: string,
+  text: string,
+  defaultValue: boolean
+}
+
+type ButtonGroupField = {
+  type: 'button-group',
+  name: string,
+  label: string,
+  config: {
+    buttons: Array<Button>
+  }
+}
+
 */
 
 class ControlPanel extends Component {
 
-  static propTypes = {
-    fields: PropTypes.array.isRequired,
-    onSettingsChange: PropTypes.func.isRequired
-  }
-
-  constructor(props){
+  constructor(props: Props){
     super(props);
 
     this.state = {
@@ -35,26 +68,28 @@ class ControlPanel extends Component {
       sliderValues: {} //track curr slider values for real-time updates
     }
 
-
     let fields = this.props.fields;
+    let field: Field;
 
-    let field;
     //populate settings with defaults and groupValidities with true
-    for(index in fields){
-      field = fields[index];
-      this.state.settings[field.name] = field.defaultValue;
+    for(let i = 0; i < fields.length; i++){
+      field = fields[i];
+
       if(field.type == 'slider'){
         this.state.sliderValues[field.name] = field.defaultValue;
       }
       else if(field.type == 'button-group'){
         let buttonGroupSettings = {};
-        for(index in field.config.buttons){
-          let button = field.config.buttons[index];
+        for(let j = 0; j < field.config.buttons.length; j++){
+          let button = field.config.buttons[j];
 
           buttonGroupSettings[button.name] = button.defaultValue;
         }
 
         this.state.settings[field.name] = buttonGroupSettings;
+      }
+      else {
+        this.state.settings[field.name] = field.defaultValue;
       }
     }
 
@@ -70,12 +105,12 @@ class ControlPanel extends Component {
 
   resetButtonGroup(settings, name){
 
-    for(index in this.props.fields){
-      let field = this.props.fields[index];
-      if(field.name == name){
+    for(let i = 0; i < this.props.fields.length; i++){
+      let field = this.props.fields[i];
+      if(field.name == name && field.type == 'button-group'){
         let resetGroup = {};
-        for(buttonIndex in field.config.buttons){
-          let button = field.config.buttons[buttonIndex];
+        for(let j = 0; j < field.config.buttons.length; j++){
+          let button = field.config.buttons[j];
           resetGroup[button.name] = button.defaultValue;
         }
         settings[field.name] = resetGroup;
@@ -179,7 +214,6 @@ class ControlPanel extends Component {
               {label}
             </Text>
             <TextInput
-              ref={(input) => { this.lengthInput = input; }}
               keyboardType = 'numeric'
               style = {styles.cpFieldInput}
               value = {this.state.settings[name] == null ? "" : this.state.settings[name].toString()}
@@ -192,7 +226,6 @@ class ControlPanel extends Component {
             />
           </View>
         );
-        break;
 
       case 'switch':
         return (
@@ -211,7 +244,6 @@ class ControlPanel extends Component {
             </View>
           </View>
         );
-        break;
 
       case 'slider':
         return (
@@ -240,15 +272,14 @@ class ControlPanel extends Component {
             </View>
           </View>
         );
-        break;
 
       case 'button-group':
 
         let buttonsWithValues = config.buttons;
 
-        for(index in buttonsWithValues){
-          let button = buttonsWithValues[index];
-          buttonsWithValues[index].value = this.state.settings[name][button.name];
+        for(let i = 0; i < buttonsWithValues.length; i++){
+          let button = buttonsWithValues[i];
+          buttonsWithValues[i].value = this.state.settings[name][button.name];
         }
 
         return (
@@ -265,7 +296,6 @@ class ControlPanel extends Component {
             />
           </View>
         );
-        break;
     }
 
   }

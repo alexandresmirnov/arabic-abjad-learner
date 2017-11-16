@@ -4,12 +4,16 @@ import { TabNavigator } from 'react-navigation';
 
 import { styles } from '../styles.js';
 
+import ArabicPatternsScreen from './ArabicPatternsScreen.js';
 import ArabicWordsScreen from './ArabicWordsScreen.js';
 import ArabicCharsScreen from './ArabicCharsScreen.js';
 
 
 //this is the TabNavigator for moving between words and mf
 const ArabicContent = TabNavigator({
+  Patterns: {
+    screen: ArabicPatternsScreen
+  },
   Words: {
     screen: ArabicWordsScreen
   },

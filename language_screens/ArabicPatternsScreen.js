@@ -10,45 +10,55 @@ import ControlPanel from '../ControlPanel.js';
 
 const SETTINGS_FIELDS = [
   {
-    name: 'includeForms',
-    type: 'button-group',
-    label: 'Forms:',
+    name: 'length',
+    type: 'slider',
+    label: "Length: ",
+    defaultValue: 2,
     config: {
-      buttons: [
-        {
-          name: 'initial',
-          text: 'Initial',
-          defaultValue: false,
-        },
-        {
-          name: 'medial',
-          text: 'Medial',
-          defaultValue: true
-        },
-        {
-          name: 'final',
-          text: 'Final',
-          defaultValue: false,
-        },
-        {
-          name: 'isolated',
-          text: 'Isolated',
-          defaultValue: false,
-        },
-        {
-          name: 'trouble',
-          text: 'Trouble',
-          defaultValue: false,
-        }
-      ]
+      minimumValue: 1,
+      maximumValue: 5,
+      step: 1,
+      displayValue: (value) => {
+        return (<Text style={{fontWeight: 'bold'}}>{value.toFixed(0)} syllables</Text>);
+      }
     }
-  }
-];
+  },
+  {
+    name: 'daChance',
+    type: 'slider',
+    label: "Def. article: ",
+    defaultValue: 0.3,
+    config: {
+      minimumValue: 0,
+      maximumValue: 1,
+      step: 0.1,
+      displayValue: (value) => {
+        return (<Text style={{fontWeight: 'bold'}}>{(value.toFixed(1) * 100) + '%'}</Text>);
+      }
+    }
+  },
+  {
+    name: 'tmChance',
+    type: 'slider',
+    label: "Taa marbutah: ",
+    defaultValue: 0.3,
+    config: {
+      minimumValue: 0,
+      maximumValue: 1,
+      step: 0.1,
+      outputPrecision: 1,
+      displayValue: (value) => {
+        return (<Text style={{fontWeight: 'bold'}}>{(value.toFixed(1) * 100) + '%'}</Text>);
+      }
+    }
+  },
+]
 
-//this is also inside a tab
-class ArabicCharsScreen extends Component {
+//this is inside a tab
+class ArabicPatternsScreen extends Component {
+
   static navigationOptions = {
-    title: 'Characters'
+    title: 'Patterns'
   };
 
   constructor(props) {
@@ -62,16 +72,8 @@ class ArabicCharsScreen extends Component {
     for(index in SETTINGS_FIELDS){
       field = SETTINGS_FIELDS[index];
       this.state.settings[field.name] = SETTINGS_FIELDS[index].defaultValue;
-
-      if(field.type == 'button-group'){
-        this.state.settings[field.name] = {};
-        for(let buttonIndex in field.config.buttons){
-          let button = field.config.buttons[buttonIndex];
-
-          this.state.settings[field.name][button.name] = button.defaultValue;
-        }
-      }
     }
+
   }
 
   handleSettingsChange(s){
@@ -91,22 +93,19 @@ class ArabicCharsScreen extends Component {
     )
   }
 
-  validateSettings() {
-    this._controlPanel.validateSettings();
-  }
-
   render() {
     return (
       <DrawerView
         closedOffset={-1 * this.getCPHeight()}
         threshold={30}
       >
-      <View
-        style={[styles.cpView, {height: this.getCPHeight()}]}
-      >
+        <View
+          style={[styles.cpView, {height: this.getCPHeight()}]}
+        >
           <ControlPanel
             ref={(ref) => {this._controlPanel = ref}}
             onSettingsChange={(s) => {this.handleSettingsChange(s)}}
+            onFinishGeneration = {(height) => {this.setCPHeight(height)}}
             fields = {SETTINGS_FIELDS}
           />
         </View>
@@ -114,17 +113,15 @@ class ArabicCharsScreen extends Component {
           <CharManager
             language={
               new Arabic({
-                type: 'chars',
+                type: 'patterns',
                 settings: this.state.settings
               })
             }
-            beforeGenerateNew={() => this.validateSettings()}
           />
         </View>
       </DrawerView>
     );
   }
-
 }
 
-export default ArabicCharsScreen;
+export default ArabicPatternsScreen;

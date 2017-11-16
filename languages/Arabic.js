@@ -39,8 +39,17 @@ type WordsSettings = {
   tmChance: number
 }
 
-type Config = CharsConfig | WordsConfig;
-type Settings = CharsSettings | WordsSettings;
+type PatternsConfig = {
+  type: 'patterns',
+  settings: PatternsSettings
+}
+
+type PatternsSettings = {
+  length: number,
+}
+
+type Config = CharsConfig | WordsConfig | PatternsConfig;
+type Settings = CharsSettings | WordsSettings | PatternsSettings;
 
 type Tuples = {
   chars: {
@@ -56,10 +65,14 @@ type Tuples = {
     kasra: Array<Tuple>
   },
   plain: {
-    obstruents: Array<Tuple>,
+    voicelessStops: Array<Tuple>,
+    voicedStops: Array<Tuple>,
+    voicelessFricatives: Array<Tuple>,
+    voicedFricatives: Array<Tuple>,
     liquids: Array<Tuple>,
     nasals: Array<Tuple>,
-    semiVowels: Array<Tuple>
+    semiVowels: Array<Tuple>,
+    h: Array<Tuple>
   },
   shaddah: {
     obstruents: Array<Tuple>,
@@ -89,10 +102,14 @@ type TuplesConfig = {
     kasra?: boolean,
   } | boolean,
   plain?: {
-    obstruents?: boolean,
+    voicelessStops?: boolean,
+    voicedStops?: boolean,
+    voicelessFricatives?: boolean,
+    voicedFricatives?: boolean,
     liquids?: boolean,
     nasals?: boolean,
     semiVowels?: boolean,
+    h?: boolean,
   } | boolean,
   shaddah?: {
     obstruents?: boolean,
@@ -263,8 +280,8 @@ class Arabic {
           ['ضَ','Da'],
           ['طَ','Ta'],
           ['ظَ','Za'],
-          ['عَ','ga'],
-          ['غَ','gha'],
+          ['عَ','ea'],
+          ['غَ','ga'],
           ['فَ','fa'],
           ['قَ','qa'],
           ['كَ','ka'],
@@ -293,8 +310,8 @@ class Arabic {
           ['ضُ','Du'],
           ['طُ','Tu'],
           ['ظُ','Zu'],
-          ['عُ','gu'],
-          ['غُ','ghu'],
+          ['عُ','eu'],
+          ['غُ','gu'],
           ['فُ','fu'],
           ['قُ','qu'],
           ['كُ','ku'],
@@ -321,8 +338,8 @@ class Arabic {
           ['ضِ','Di'],
           ['طِ','Ti'],
           ['ظِ','Zi'],
-          ['عِ','gi'],
-          ['غِ','ghi'],
+          ['عِ','ei'],
+          ['غِ','gi'],
           ['فِ','fi'],
           ['قِ','qi'],
           ['كِ','ki'],
@@ -334,28 +351,31 @@ class Arabic {
         ],
       },
       plain: {
-        obstruents: [
-          ['ب','b'],
+        voicelessStops: [
           ['ت','t'],
-          ['ث','th'],
-          ['ج','j'],
-          ['ح','H'],
-          ['خ','kh'],
-          ['د','d'],
-          ['ذ','dh'],
-          ['ز','z'],
-          ['س','s'],
-          ['ش','sh'],
-          ['ص','S'],
-          ['ض','D'],
           ['ط','T'],
-          ['ظ','Z'],
-          ['ع','g'],
-          ['غ','gh'],
-          ['ف','f'],
           ['ق','q'],
           ['ك','k'],
-          ['ه','h'],
+        ],
+        voicedStops: [
+          ['ب','b'],
+          ['د','d'],
+          ['ض','D'],
+        ],
+        voicelessFricatives: [
+          ['ث','th'],
+          ['ح','H'],
+          ['خ','kh'],
+          ['ص','S'],
+          ['ف','f'],
+        ],
+        voicedFricatives: [
+          ['ج','j'],
+          ['ذ','dh'],
+          ['ز','z'],
+          ['ظ','Z'],
+          ['ع','e'],
+          ['غ','g'],
         ],
         liquids: [
           ['ر','r'],
@@ -368,6 +388,9 @@ class Arabic {
         semiVowels: [
           ['و','w'],
           ['ي','y'],
+        ],
+        h: [
+          ['ه','h'],
         ]
       },
       shaddah: {
@@ -387,12 +410,11 @@ class Arabic {
           ['ضّ','DD'],
           ['طّ','TT'],
           ['ظّ','ZZ'],
-          ['عّ','gg'],
-          ['غّ','ggh'],
+          ['عّ','ee'],
+          ['غّ','gg'],
           ['فّ','ff'],
           ['قّ','qq'],
           ['كّ','kk'],
-          ['هّ','hh'],
         ],
         liquids: [
           ['رّ','rr'],
@@ -446,7 +468,6 @@ class Arabic {
 
     return resultTuples;
   }
-
 
   //get things
   //0...max
@@ -525,33 +546,83 @@ class Arabic {
       answer: ''
     }
 
-    let first = this.getDatum({
-      plain: {
-        obstruents: true,
-        liquids: true,
-        nasals: true
-      }
-    });
+    let first: Datum = {
+      char: '',
+      answer: ''
+    };
 
-    let second = this.getDatum({
-      plain: {
-        obstruents: true,
-        liquids: true,
-        nasals: true
-      }
-    });
+    let second: Datum = {
+      char: '',
+      answer: ''
+    }
 
-    //WARNING: need to change this, shouldn't loop based on a random number
-    //keep changing second until they're different
-    while(first.char == second.char){
+    //50/50 chance for high vs. low sonority
+    if(Math.random() < 0.5){
+      first = this.getDatum({
+        plain: {
+          voicelessStops: true,
+          voicelessFricatives: true,
+          h: true,
+        }
+      });
+
       second = this.getDatum({
         plain: {
-          obstruents: true,
+          voicelessStops: true,
+          voicelessFricatives: true,
+        }
+      });
+
+      //WARNING: need to change this, shouldn't loop based on a random number
+      //keep changing second until they're different
+      while(first.char == second.char){
+        second = this.getDatum({
+          plain: {
+            voicelessStops: true,
+            voicelessFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+      }
+    }
+    //higher sonority
+    else {
+      first = this.getDatum({
+        plain: {
+          voicedStops: true,
+          voicedFricatives: true,
+          liquids: true,
+          nasals: true,
+          h: true,
+        }
+      });
+
+      second = this.getDatum({
+        plain: {
+          voicedStops: true,
           liquids: true,
           nasals: true
         }
       });
+
+      //WARNING: need to change this, shouldn't loop based on a random number
+      //keep changing second until they're different
+      while(first.char == second.char){
+        second = this.getDatum({
+          plain: {
+            voicedStops: true,
+            voicedFricatives: true,
+            liquids: true,
+            nasals: true
+          }
+        });
+      }
     }
+
+
+
+
 
     cluster.char = first.char + second.char;
     cluster.answer = first.answer + second.answer;
@@ -561,31 +632,65 @@ class Arabic {
   }
 
   getNewPattern(pattern: string){
-    let word: Datum;
+    let word: Datum = {
+      char: '',
+      answer: ''
+    };
 
-    switch(pattern){
-      case 'CVCC':
-        let c1: Datum, c2: Datum;
+    if(pattern == 'CVCC'){
+      let c1: Datum, c2: Datum;
 
-        c1 = this.getDatum({
-          vowel: true
+      c1 = this.getDatum({
+        vowel: true
+      });
+
+      //chance of shaddah
+      if(Math.random() < 0.15){
+        c2 = this.getDatum({
+          shaddah: true
+        })
+      }
+      else {
+        c2 = this.getNewCluster();
+      }
+
+      word = {
+        char: c1.char + c2.char,
+        answer: c1.answer + c2.answer,
+      }
+    }
+    else if(pattern == 'maCCaC') {
+      word.char += 'مَ';
+      word.answer += 'ma';
+
+      let c1: Datum, c2: Datum, c3: Datum;
+
+      c1 = this.getDatum({
+        plain: true
+      });
+
+      c2 = this.getDatum({
+        vowel: {
+          fatha: true
+        }
+      });
+
+      //can't have two of the same, e.g. mattab because it then gets weird
+      while(c1.answer == c2.answer.slice(0,1)){
+        c2 = this.getDatum({
+          vowel: {
+            fatha: true
+          }
         });
+      }
 
-        //chance of shaddah
-        if(Math.random() < 0.15){
-          c2 = this.getDatum({
-            shaddah: true
-          })
-        }
-        else {
-          c2 = this.getNewCluster();
-        }
+      c3 = this.getDatum({
+        plain: true
+      });
 
-        word = {
-          char: c1.char + c2.char,
-          answer: c1.answer + c2.answer,
-        }
-        break;
+      word.char += c1.char + c2.char + c3.char;
+      word.answer += c1.answer + c2.answer + c3.answer;
+
     }
 
     return word;
@@ -636,7 +741,10 @@ class Arabic {
     if(Math.random() < codaChance){
       let coda = this.getDatum({
         plain: {
-          obstruents: true
+          voicelessStops: true,
+          voicedStops: true,
+          voicelessFricatives: true,
+          voicedFricatives: true
         }
       })
 
@@ -696,8 +804,6 @@ class Arabic {
   //length is amount of syllables
   //TODO: set up common patterns, e.g. CVCC, MaCCaC, CuCuuC, etc.
   getNewWord(settings: WordsSettings): Datum {
-
-    console.log("this.getNewPattern('CVCC'):",this.getNewPattern('CVCC'));
 
     let word =  {
       char: '',
@@ -759,7 +865,6 @@ class Arabic {
 
     }
 
-    console.log('returning word:', word);
     return word;
   }
 
@@ -779,12 +884,30 @@ class Arabic {
   }
 
   getNew(): Datum {
-    if(this.config.type === "words") {
-      return this.getNewWord(this.config.settings);
+    let result: Datum = {
+      char: '',
+      answer: ''
+    }
+
+    let config = this.config;
+
+    if(config.type === "words") {
+      result = this.getNewWord(config.settings);
+    }
+    else if(config.type == "patterns"){
+      result = this.getNewPattern('maCCaC');
     }
     else {
-      return this.getNewChar(this.config.settings);
+      result = this.getNewChar(config.settings);
     }
+
+    //remove aposotrophe (hamza) at the beginning of a word b/c irrelevant
+    if(result.answer.slice(0,1) == "'"){
+      result.answer = result.answer.substr(1);
+    }
+
+    console.log('result:', result);
+    return result;
   }
 }
 

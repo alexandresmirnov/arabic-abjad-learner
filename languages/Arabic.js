@@ -1,13 +1,53 @@
+/* @flow */
+
 /*
 eventually, this will extend a Language class with required methods:
   - getNewWord(length)
   - getNewChar()
 */
 
+type Raw = [string, string];
+
+type Datum = {
+  char: string,
+  answer: string
+}
+
+type CharsConfig = {
+  type: 'chars',
+  settings: CharsSettings
+}
+
+type CharsSettings = {
+  includeForms: {
+    initial: boolean,
+    medial: boolean,
+    final: boolean,
+    isolated: boolean,
+    trouble: boolean
+  }
+}
+
+type WordsConfig = {
+  type: 'words',
+  settings: WordsSettings
+}
+
+type WordsSettings = {
+  length: number,
+  daChance: number,
+  tmChance: number
+}
+
+type Config = CharsConfig | WordsConfig;
+type Settings = CharsSettings | WordsSettings;
+
 class Arabic {
-  constructor(config) {
-    this.settings = config.settings;
-    this.type = config.type;
+  config: Config
+  pairs: {};
+
+  constructor(config: Config) {
+    this.config = config;
     this.pairs = {
       chars: {
         trouble: [
@@ -166,6 +206,7 @@ class Arabic {
           ['مَ','ma'],
           ['نَ','na'],
           ['هَ','ha'],
+          ['أَ',"'a"],
           //['وَ','wa'],
           //['يَ','ya']
         ],
@@ -195,7 +236,7 @@ class Arabic {
           ['مُ','mu'],
           ['نُ','nu'],
           ['هُ','hu'],
-          //['يُ','yu'],
+          ['أُ',"'u"],
         ],
         kasraPairs: [
           ['بِ','bi'],
@@ -223,7 +264,7 @@ class Arabic {
           ['مِ','mi'],
           ['نِ','ni'],
           ['هِ','hi'],
-          //['وِ','wi']
+          ['إ',"'i"]
         ],
       },
       plainPairs: {
@@ -286,31 +327,29 @@ class Arabic {
   }
 
   //0...max
-  randomInt(max) {
+  randomInt(max: number): number {
     return Math.floor(Math.random()*(max+1));
   }
 
-  //get random element from array
-  getRandomEl(array) {
+  //get random Raw from Array<Raw>
+  getRandomRaw(array: Array<Raw>): Raw {
     let random = this.randomInt(array.length-1);
     let el = array[random];
     return el;
   }
 
-  getRandomDatum(dataArray){
-    let el = this.getRandomEl(dataArray);
+  //get random Datum from Array<Raw>
+  getRandomDatum(rawArray: Array<Raw>): Datum {
+    let el = this.getRandomRaw(rawArray);
     return {
       char: el[0],
       answer: el[1]
     }
   }
 
-  getNewDatum(config) {
-
-    console.log('getNewDatum called with config:',config);
-
+  getNewDatum(config: {}): Datum {
     let pairBank = [];
-    let pairs = this.pairs;
+    let pairs = this.getPairs();
 
     for(let group in pairs){ //group == chars, vowelPairs, plainPairs, other
       if(config[group] != null){
@@ -332,10 +371,10 @@ class Arabic {
     }
 
     return this.getRandomDatum(pairBank);
-
   }
 
-  getNewSyllable() {
+  //TODO: remove impermissible sequences like uy and iw
+  getNewSyllable(): Datum {
 
     let preCodaChance = 0.3; //w, y, r, l, n, m
     let codaChance = 0.3; //any consonant
@@ -373,6 +412,7 @@ class Arabic {
       }
     }
 
+    //TODO: add in sonorant codas, just make sure the preCoda isn't the same
     //possibly a coda
     if(Math.random() < codaChance){
       let coda = this.getNewDatum({
@@ -391,9 +431,9 @@ class Arabic {
   }
 
   //daChance: chance of definite article as first syllable
-  getNewStartSyllable() {
+  getNewStartSyllable(daChance: number): Datum {
     //30% chance of definite article
-    if(Math.random() < this.settings.daChance){
+    if(Math.random() < daChance){
       return {
         char: 'ال',
         answer: 'al'
@@ -405,9 +445,9 @@ class Arabic {
     }
   }
 
-  getNewEndSyllable() {
+  getNewEndSyllable(tmChance: number): Datum {
     //30% chance of a tm syllable
-    if(Math.random() < this.settings.tmChance){
+    if(Math.random() < tmChance){
       let fathaDatum = this.getNewDatum({
         vowelPairs: {
           fathaPairs: true
@@ -434,11 +474,9 @@ class Arabic {
     }
   }
 
-
   //length is amount of syllables
-  getNewWord() {
-
-    let length = this.settings.length;
+  //TODO: set up common patterns, e.g. CVCC, MaCCaC, CuCuuC, etc.
+  getNewWord(settings: WordsSettings): Datum {
 
     let word =  {
       char: '',
@@ -447,10 +485,10 @@ class Arabic {
 
     let syllable;
 
-    for(let i = 0; i < length; i ++){
+    for(let i = 0; i < settings.length; i ++){
       //if we're at start
       if(i == 0){
-        syllable = this.getNewStartSyllable();
+        syllable = this.getNewStartSyllable(settings.daChance);
 
         word.char += syllable.char;
         word.answer += syllable.answer;
@@ -483,8 +521,8 @@ class Arabic {
         }
       }
       //if we're at end
-      else if(i == length-1){
-        syllable = this.getNewEndSyllable();
+      else if(i == settings.length-1){
+        syllable = this.getNewEndSyllable(settings.tmChance);
 
         word.char += syllable.char;
         word.answer += syllable.answer;
@@ -505,30 +543,28 @@ class Arabic {
   }
 
   //returns a single char
-  getNewChar() {
+  getNewChar(settings: CharsSettings): Datum {
     let config = {
       chars: {
-        initial: this.settings.includeForms.initial,
-        medial: this.settings.includeForms.medial,
-        medial: this.settings.includeForms.medial,
-        final: this.settings.includeForms.final,
-        isolated: this.settings.includeForms.isolated,
+        initial: settings.includeForms.initial,
+        medial: settings.includeForms.medial,
+        medial: settings.includeForms.medial,
+        final: settings.includeForms.final,
+        isolated: settings.includeForms.isolated,
       }
     }
 
     return this.getNewDatum(config);
   }
 
-  getNew() {
-    if(this.type == 'words'){
-      return this.getNewWord();
+  getNew(): Datum {
+    if(this.config.type === "words") {
+      return this.getNewWord(this.config.settings);
     }
     else {
-      return this.getNewChar();
+      return this.getNewChar(this.config.settings);
     }
   }
 }
-
-let pairs = Arabic.pairs;
 
 export default Arabic;

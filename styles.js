@@ -1,5 +1,4 @@
 import { Platform, StyleSheet, StatusBar } from 'react-native';
-import Expo from 'expo';
 
 export const styles = StyleSheet.create({
 

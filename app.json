@@ -6,7 +6,8 @@
     "slug": "arabicabjadlearner",
     "icon": "../ic_motorcycle_black_48dp.png",
     "android": {
-      "package": "com.alexandresmirnov.arabicabjadlearner"
-    },
+      "package": "com.alexandresmirnov.arabicabjadlearner",
+      "permissions": []
+    }
   }
 }

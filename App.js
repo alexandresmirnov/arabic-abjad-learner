@@ -6,6 +6,7 @@ import { styles } from './styles.js';
 
 import ArabicScreenManager from './language_screens/ArabicScreenManager.js';
 
+//TODO: add info screen and transliteration reference screen, make headermenu
 const ArabicAbjadLearner = StackNavigator({
   Arabic: {
     screen: ArabicScreenManager

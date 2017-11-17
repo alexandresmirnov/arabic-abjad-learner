@@ -1283,7 +1283,7 @@ class Arabic {
     if(config.type === "words") {
       result = this.getNewWord(config.settings);
     }
-    else if(config.type == "patterns"){
+    else if(config.type === "patterns"){
       result = this.getRandomPattern();
     }
     else {

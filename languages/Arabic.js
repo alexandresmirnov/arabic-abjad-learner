@@ -1295,7 +1295,6 @@ class Arabic {
       result.answer = result.answer.substr(1);
     }
 
-    console.log('result:', result);
     return result;
   }
 }

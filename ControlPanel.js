@@ -179,8 +179,6 @@ class ControlPanel extends Component<Props, State> {
 
     }
 
-    console.log('invalid groups:',buttonGroupValidities);
-
     //fix all the invalid groups
     for(let name in buttonGroupValidities){
       let validity = buttonGroupValidities[name];

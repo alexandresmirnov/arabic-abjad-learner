@@ -33,7 +33,8 @@ const ArabicContent = TabNavigator({
     inactiveTintColor: '#aaa',
     indicatorStyle: {
       backgroundColor: '#009688'
-    }
+    },
+    pressColor: 'rgba(224, 224, 224, 0.8)'
   }
 });
 
@@ -87,7 +88,6 @@ class HeaderMenu extends Component {
   }
 }
 
-//ArabicScreen screen (used inside top-level drawer), contains Words and MF
 class ArabicScreenManager extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Arabic Abjad Learner',

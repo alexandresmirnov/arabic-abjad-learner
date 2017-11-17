@@ -46,7 +46,6 @@ export const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     elevation: 0, //removes shadow
     justifyContent: 'space-between',
-    height: 52
   },
 
   //text in stack header, need to center it
@@ -54,7 +53,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: 24, //default is 20,
-    lineHeight: 36,
     fontWeight: "400",
     color: '#004D40'
   },
@@ -66,9 +64,47 @@ export const styles = StyleSheet.create({
   },
 
   stackHeaderMenu: {
-    height: 56,
+    height: 60,
     width: 40,
-    backgroundColor: 'blue'
+  },
+
+
+  //about screen
+  aboutHeader: {
+    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+    elevation: 3, //removes shadow
+    justifyContent: 'space-between',
+    height: 56
+  },
+
+  aboutHeaderTitle: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontSize: 24, //default is 20,
+    fontWeight: "400",
+    color: '#004D40'
+  },
+
+  aboutContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 20
+  },
+
+  aboutSection: {
+    flex: 1,
+    marginBottom: 20
+  },
+
+  aboutSectionTitle: {
+    fontSize: 24
+  },
+
+  aboutSectionText: {
+    fontSize: 16,
+    lineHeight: 24
   },
 
   //ControlPanel

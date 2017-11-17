@@ -46,12 +46,16 @@ class HeaderMenu extends Component {
     return (
       <Menu
         ref={(ref) => this.menu = ref}
+        style={{
+          width: 100
+        }}
         button={
           <TouchableOpacity
             onPress={() => this.menu.show()}
             style={{
-              height: 52,
+              height: 60,
               width: 42,
+              paddingTop: 5,
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center'
@@ -69,25 +73,14 @@ class HeaderMenu extends Component {
       >
         <MenuItem
           onPress={() => {
-            console.log(this.props.navigation);
-            this.props.navigation.navigate('Arabic');
+            this.props.navigation.navigate('About');
+            this.menu.hide();
           }}
           textStyle = {{
-            fontSize: 16
+            fontSize: 18
           }}
         >
           About
-        </MenuItem>
-        <MenuItem
-          onPress={() => {
-            console.log(this.props.navigation);
-            this.props.navigation.navigate('Arabic');
-          }}
-          textStyle = {{
-            fontSize: 16
-          }}
-        >
-          Reference
         </MenuItem>
       </Menu>
     )
@@ -107,7 +100,6 @@ class ArabicScreenManager extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
-
         <ArabicContent style={styles.container}/>
       </View>
     );

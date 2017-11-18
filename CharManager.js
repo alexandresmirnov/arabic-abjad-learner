@@ -139,7 +139,8 @@ export class CharInput extends Component {
         <TextInput
           style = {styles.input}
           value = {this.props.inputValue}
-          placeHolder="test"
+          autoCapitalize = 'none'
+          autoCorrect = {false}
           onChangeText = {(text) => {
               this.props.onInput(text);
             }

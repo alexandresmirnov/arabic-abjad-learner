@@ -94,6 +94,7 @@ class ControlPanel extends Component<Props, State> {
 
       if(field.type === 'slider'){
         this.state.sliderValues[field.name] = field.defaultValue;
+        this.state.settings[field.name] = field.defaultValue;
       }
       else if(field.type === 'button-group'){
         let buttonGroupSettings = {};

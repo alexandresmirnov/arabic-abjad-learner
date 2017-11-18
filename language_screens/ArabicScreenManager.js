@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import { TabNavigator } from 'react-navigation';
-import Menu, { MenuItem } from 'react-native-material-menu';
+import Menu, { MenuItem } from '../react-native-material-menu/index.js';
 
 import { styles } from '../styles.js';
 

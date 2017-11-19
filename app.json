@@ -2,10 +2,11 @@
   "expo": {
     "sdkVersion": "22.0.0",
     "name": "Arabic Abjad Learner",
-    "version": "1.0.0",
-    "slug": "arabicabjadlearner",
-    "icon": "../ic_motorcycle_black_48dp.png",
+    "version": "1.0.1",
+    "slug": "arabic-abjad-learner",
+    "icon": "../assets/ic_motorcycle_black_48dp.png",
     "android": {
+      "versionCode": 2,
       "package": "com.alexandresmirnov.arabicabjadlearner",
       "permissions": []
     }

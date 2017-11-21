@@ -22,7 +22,7 @@ class AboutScreen extends Component {
         <View style={styles.aboutSection}>
           <Text style={styles.aboutSectionTitle}>What is this for?</Text>
           <Text style={styles.aboutSectionText}>
-          When learning Arabic, the writing system is probably one of the largest challenges would-be learners face.  [app name] intends to streamline the process of learning to read the Arabic abjad by providing a convenient way to practice reading one word at a time.  Whenever you have a free moment, do a couple words; over time, it will become more and more effortless.
+          When learning Arabic, the writing system is probably one of the largest challenges would-be learners face.  Arabic Abjad Learner intends to streamline the process of learning to read the Arabic abjad by providing a convenient way to practice reading one word at a time.  Whenever you have a free moment, do a couple words; over time, it will become more and more effortless.
           </Text>
         </View>
         <View style={styles.aboutSection}>

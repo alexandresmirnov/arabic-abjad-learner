@@ -4,9 +4,9 @@
     "name": "Arabic Abjad Learner",
     "version": "1.0.1",
     "slug": "arabic-abjad-learner",
-    "icon": "../assets/ic_motorcycle_black_48dp.png",
+    "icon": "../icon/icon.png",
     "android": {
-      "versionCode": 2,
+      "versionCode": 3,
       "package": "com.alexandresmirnov.arabicabjadlearner",
       "permissions": []
     }

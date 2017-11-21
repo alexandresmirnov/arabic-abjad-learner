@@ -8,7 +8,8 @@ import { styles } from './styles.js';
 class CharManager extends Component {
 
   static propTypes = {
-    language: PropTypes.object.isRequired
+    language: PropTypes.object.isRequired,
+    hintText: PropTypes.array,
   }
 
   constructor(props){
@@ -25,8 +26,16 @@ class CharManager extends Component {
     this.onInput = this.props.onInput == null ? () => {} : this.props.onInput;
     this.beforeGenerateNew = this.props.beforeGenerateNew == null ? () => {} : this.props.beforeGenerateNew;
 
-    this.hintText = 'Type the transliteration.\nTo see the answer, type space.\nPull down for settings.';
+    this.hintText = '';
 
+    if(this.props.hintText == null){
+      this.hintText = 'Type the transliteration.\nTo see the answer, type space.\nPull down for settings.';
+    }
+    else {
+      for(let i = 0; i < this.props.hintText.length; i++){
+        this.hintText = this.hintText + this.props.hintText[i] + "\n";
+      }
+    }
 
     //note that this.props contains settings object passed down from parent screen (e.g. ArabicWordsScreen)
 

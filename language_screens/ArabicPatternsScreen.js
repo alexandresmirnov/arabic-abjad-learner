@@ -20,6 +20,10 @@ class ArabicPatternsScreen extends Component {
     return (
       <View style={styles.container}>
         <CharManager
+          hintText={[
+            "Type the transliteration.",
+            "To see the answer, type space.",
+          ]}
           language={
             new Arabic({
               type: 'patterns',
